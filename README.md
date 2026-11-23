@@ -1,79 +1,119 @@
-    # Experiment 1.B : Product Price Analysis Using Python Functions
-    
-    ## Aim
-    To analyze quarterly product sales data across multiple products and quarters using 2D NumPy arrays and Python statistical functions.
-    
-    ## Algorithm
-    
-    1. **Start** the program.
-    2. **Import Library**: Import the `numpy` module as `np` for numerical array operations.
-    3. **Initialize 2D Sales Matrix**: Create a $3 \times 4$ NumPy array `sales` containing quarterly sales figures for 3 products across 4 quarters.
-    4. **Compute Product-Wise Totals**: Calculate the sum of sales across columns (`axis=1`) for each product using `np.sum(sales, axis=1)`.
-    5. **Compute Quarter-Wise Totals**: Calculate the sum of sales across rows (`axis=0`) for each quarter using `np.sum(sales, axis=0)`.
-    6. **Compute Overall Statistical Metrics**:
-       * Calculate the overall mean sales across all entries using `np.mean(sales)`.
-       * Identify the maximum sales figure using `np.max(sales)`.
-       * Identify the minimum sales figure using `np.min(sales)`.
-    7. **Display Analysis Summary**: Print the original sales matrix, product-wise totals, quarter-wise totals, overall average, highest sale, and lowest sale.
-    8. **Stop** the program.
-    ## Program
-    
-    import numpy as np
-    
-    
-    def analyze_sales(sales):
-        product_totals = np.sum(sales, axis=1)
-        quarter_totals = np.sum(sales, axis=0)
-        mean_sales = np.mean(sales)
-        max_sales = np.max(sales)
-        min_sales = np.min(sales)
-
-    return {
-        "product_totals": product_totals,
-        "quarter_totals": quarter_totals,
-        "mean_sales": mean_sales,
-        "max_sales": max_sales,
-        "min_sales": min_sales,
-    }
-
-
-    def main():
-        # Step 1: Create 2D array (Rows = Products, Columns = Quarters)
-        sales = np.array([
-            [12000, 15000, 14000, 16000],  # Product 1 (Q1-Q4)
-            [9500, 11000, 10500, 12500],   # Product 2 (Q1-Q4)
-            [18000, 17500, 19000, 21000],  # Product 3 (Q1-Q4)
-        ])
-
-    # Step 2: Calculate Aggregations and Summary Statistics
-    stats = analyze_sales(sales)
-
-    # Step 3: Display Summary
-    print("=== Quarterly Product Sales Analysis ===\n")
-    print("Sales Matrix (Rows = Products, Columns = Q1..Q4):")
-    print(sales)
-
-    print("\nProduct-Wise Total Sales:")
-    for idx, total in enumerate(stats["product_totals"], start=1):
-        print(f"  Product {idx}: {total:.2f}")
-
-    print("\nQuarter-Wise Total Sales:")
-    for q_idx, total in enumerate(stats["quarter_totals"], start=1):
-        print(f"  Q{q_idx}: {total:.2f}")
-
-    print("\nOverall Summary Statistics:")
-    print(f"  Overall Mean Sales : {stats['mean_sales']:.2f}")
-    print(f"  Highest Sale       : {stats['max_sales']:.2f}")
-    print(f"  Lowest Sale        : {stats['min_sales']:.2f}")
-
-
-    if __name__ == "__main__":
-        main()
+        # Experiment 2 : Customer Data Exploration Using Pandas
+        
+        ## Aim
+        To create a sample customer dataset and perform data exploration, filtering, sorting, grouping, and basic statistical analytics using Pandas functions in Python.
+        
+        ## Algorithm
+        
+        1. **Start** the program.
+        2. **Import Library**: Import the `pandas` library as `pd` for tabular data manipulation and analysis.
+        3. **Initialize Dataset**: Create a Python dictionary `data` containing customer attributes (`Customer_ID`, `Customer_Name`, `Region`, `Age`, `Annual_Income`, `Spending_Score`, `Loyalty_Years`).
+        4. **Construct DataFrame**: Convert the dictionary into a structured Pandas DataFrame `df` using `pd.DataFrame(data)` and print the dataset.
+        5. **Inspect Structure & Summary**:
+           * Display dataset dimensions (`df.shape`), column names (`df.columns`), data types and null counts (`df.info()`), and descriptive statistics (`df.describe()`).
+           * Display the first 3 records (`df.head(3)`) and last 3 records (`df.tail(3)`).
+        6. **Sort & Filter Records**:
+           * Sort customers in descending order of `Annual_Income` using `df.sort_values()`.
+           * Filter high-income customers where `Annual_Income > 70000`.
+        7. **Perform Group-Wise & Frequency Analysis**:
+           * Group customers by `Region` and calculate regional averages for `Annual_Income` and `Spending_Score` using `df.groupby().mean()`.
+           * Count customer distribution across each region using `df["Region"].value_counts()`.
+        8. **Compute Overall Metrics & Top Performer**:
+           * Identify the customer record with the highest `Spending_Score` using `df["Spending_Score"].idxmax()` and `df.loc[]`.
+           * Calculate overall mean `Annual_Income` and mean `Spending_Score`.
+        9. **Stop** the program.
+        
+        ## Functions and Methods Used
+        
+        | Category | Function / Method | Purpose / Description |
+        | :--- | :--- | :--- |
+        | **Data Creation** | `pd.DataFrame()` | Converts a Python dictionary into a 2D labeled tabular DataFrame |
+        | **Structural Inspection** | `df.shape`, `df.columns` | Retrieves dimensions `(rows, columns)` and column labels |
+        | | `df.info()`, `df.describe()` | Summarizes column data types, memory usage, and descriptive statistics |
+        | | `df.head(n)`, `df.tail(n)` | Views the first `n` and last `n` rows of the dataset |
+        | **Sorting & Filtering** | `df.sort_values()` | Orders records by `Annual_Income` in descending order |
+        | | Boolean Indexing (`df[...]`) | Filters customers with `Annual_Income > 70000` |
+        | **Grouping & Aggregation** | `df.groupby().mean()` | Aggregates mean income and spending score per `Region` |
+        | | `df["Region"].value_counts()` | Counts occurrences of customers in each region |
+        | | `idxmax()`, `df.loc[]`, `.mean()` | Locates the top spender row and computes dataset-wide averages |
+        
+        ## Program
+        
+        #Customer Data Exploration using Pandas
+        ```python
+        Step 1: Create a Sample Customer Dataset
+        
+        import pandas as pd
+        
+        data = {
+            "Customer_ID": [101,102,103,104,105,106,107,108],
+            "Customer_Name": ["Anita","Rajesh","Priya","Vikram","Divya","Manoj","Sita","Amit"],
+            "Region": ["North","South","East","West","North","South","East","West"],
+            "Age": [25,32,41,29,35,45,28,40],
+            "Annual_Income": [55000,72000,61000,48000,85000,90000,64000,58000],
+            "Spending_Score": [78,62,45,88,92,55,70,60],
+            "Loyalty_Years": [2,5,4,3,6,7,3,4]
+        }
+        
+        Step 2: Convert to a Pandas DataFrame
+        
+        df = pd.DataFrame(data)
+        
+        print("------CUSTOMER DATASET------")
+        print(df)
+        
+        Step 3: Basic Exploration
+        
+        print("\nShape of Dataset:", df.shape)
+        print("Columns:", df.columns.tolist())
+        
+        print("\n-------Dataset Info-------")
+        df.info()
+        
+        print("\n-----Summary Statistics-----")
+        print(df.describe())
+        
+        Step 4: Display First and Last Few Records
+        
+        print("\nFirst 3 Records:\n", df.head(3))
+        print("\nLast 3 Records:\n", df.tail(3))
+        
+        Step 5: Sort Customers by Annual Income (Descending)
+        
+        print("\nCustomers Sorted by Annual Income:\n",
+              df.sort_values(by="Annual_Income", ascending=False))
+        
+        Step 6: Filter High-Income Customers (Income greater than 70000)
+        
+        print("\nHigh Income Customers (Income > 70000):\n",
+              df[df["Annual_Income"] > 70000][["Customer_Name", "Annual_Income"]])
+        
+        Step 7: Group Customers by Region and Find Average Income and Spending Score
+        
+        print("\nRegion-wise Average Income and Spending Score:")
+        print(df.groupby("Region")[["Annual_Income", "Spending_Score"]].mean())
+        
+        Step 8: Count Number of Customers in Each Region
+        
+        print("\nCustomer Count per Region:")
+        print(df["Region"].value_counts())
+        
+        Step 9: Identify Customer with Maximum Spending Score
+        
+        top_customer = df["Spending_Score"].idxmax()
+        
+        print("\nCustomer with Highest Spending Score:")
+        print(df.loc[top_customer])
+        
+        Step 10: Compute Overall Averages
+        
+        print("\nOverall Average Annual Income:",
+              df["Annual_Income"].mean())
+        
+        print("Overall Average Spending Score:",
+              df["Spending_Score"].mean())
+        ```
     
     ## Output
-    <img width="537" height="522" alt="image" src="https://github.com/user-attachments/assets/92b0a277-4fb0-49b7-9c84-1619147e756b" />
-    
-    
-    ## Result
-    
-    The program successfully analyzes quarterly product sales using 2D NumPy arrays and Python statistical aggregation functions.
+    ```text
+            
